@@ -1,6 +1,5 @@
 package io.reflekt.plugin.analysis.models
 
-import io.reflekt.plugin.analysis.models.ReflektUses.Companion.uses
 import io.reflekt.plugin.analysis.processor.invokes.*
 import io.reflekt.plugin.analysis.processor.uses.*
 import org.jetbrains.kotlin.psi.KtClassOrObject
@@ -78,10 +77,14 @@ data class ReflektUses(
     val functions: Map<String, FunctionUses> = HashMap()
 ) {
     companion object{
+        private fun <K, V> TypeUses<K, V>.filterEmptyUsesHelper() = this.filter { it.value.isNotEmpty() }
+
+        private fun <K, V> Map<String, TypeUses<K, V>>.filterEmptyUses() = this.filter { it.value.filterEmptyUsesHelper().isNotEmpty() }
+
         fun createByProcessors(processors: Set<BaseUsesProcessor<*>>) = ReflektUses(
-            objects = processors.mapNotNull { it as? ObjectUsesProcessor }.first().fileToUses,
-            classes = processors.mapNotNull { it as? ClassUsesProcessor }.first().fileToUses,
-            functions = processors.mapNotNull { it as? FunctionUsesProcessor }.first().fileToUses
+            objects = processors.mapNotNull { it as? ObjectUsesProcessor }.first().fileToUses.filterEmptyUses(),
+            classes = processors.mapNotNull { it as? ClassUsesProcessor }.first().fileToUses.filterEmptyUses(),
+            functions = processors.mapNotNull { it as? FunctionUsesProcessor }.first().fileToUses.filterEmptyUses()
         )
 
         // TypeUses<K, V> = Map<K, MutableList<V>>

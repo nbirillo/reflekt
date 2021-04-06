@@ -19,8 +19,7 @@
         [
           "io.reflekt.test.foo",
           "io.reflekt.test.bar",
-          "io.reflekt.test.TestFunctions.Companion.foo",
-          "io.reflekt.test.main"
+          "io.reflekt.test.TestFunctions.Companion.foo"
         ]
       ]
     ],
@@ -40,6 +39,25 @@
         },
         [
           "io.reflekt.test.nested.foo"
+        ]
+      ]
+    ],
+    "io.reflekt.test.Main.kt": [
+      [
+        {
+          "signature": {
+            "fqName": "kotlin.Function0",
+            "parameters": [
+              {
+                "fqName": "kotlin.Unit",
+                "parameters": []
+              }
+            ]
+          },
+          "annotations": []
+        },
+        [
+          "io.reflekt.test.main"
         ]
       ]
     ]
