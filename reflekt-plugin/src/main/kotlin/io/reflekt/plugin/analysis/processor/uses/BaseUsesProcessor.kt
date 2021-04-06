@@ -18,7 +18,7 @@ abstract class BaseUsesProcessor<Output : Any>(override val binding: BindingCont
     // Map represents uses for each file. String in the map is a path to the file.
     abstract val fileToUses: MutableMap<String, Output>
 
-    protected fun processClassOrObjectUses(element: KtElement,
+    private fun processClassOrObjectUses(element: KtElement,
                                            invokes: ClassOrObjectInvokes,
                                            uses: ClassOrObjectUses): ClassOrObjectUses {
         (element as? KtClassOrObject)?.let {
@@ -27,6 +27,17 @@ abstract class BaseUsesProcessor<Output : Any>(override val binding: BindingCont
             }
         }
         return uses
+    }
+
+    protected fun processClassOrObjectUses(filePath: String,
+                                           element: KtElement,
+                                           invokes: ClassOrObjectInvokes,
+                                           fileToUses: MutableMap<String, ClassOrObjectUses>) {
+        val initValue = initClassOrObjectUses(invokes)
+        if (initValue.isNotEmpty()) {
+            val uses = fileToUses.getOrPut(filePath) { initValue }
+            processClassOrObjectUses(element, invokes, uses)
+        }
     }
 
     protected fun initClassOrObjectUses(invokes: ClassOrObjectInvokes): ClassOrObjectUses =

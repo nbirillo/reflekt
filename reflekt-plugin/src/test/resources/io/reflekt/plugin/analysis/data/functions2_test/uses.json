@@ -1,28 +1,50 @@
 {
   "objects": {},
   "classes": {},
-  "functions": [
-    [
-      {
-        "signature": {
-          "fqName": "kotlin.Function0",
-          "parameters": [
-            {
-              "fqName": "kotlin.Unit",
-              "parameters": []
-            }
+  "functions": {
+    "io.reflekt.test": [
+      [
+        {
+          "signature": {
+            "fqName": "kotlin.Function0",
+            "parameters": [
+              {
+                "fqName": "kotlin.Unit",
+                "parameters": []
+              }
+            ]
+          },
+          "annotations": [
+            "io.reflekt.test.FirstAnnotationTest"
           ]
         },
-        "annotations": [
-          "io.reflekt.test.FirstAnnotationTest"
+        [
+          "io.reflekt.test.foo",
+          "io.reflekt.test.bar",
+          "io.reflekt.test.TestFunctions.Companion.foo"
         ]
-      },
+      ]
+    ],
+    "io.reflekt.test.nested": [
       [
-        "io.reflekt.test.foo",
-        "io.reflekt.test.bar",
-        "io.reflekt.test.TestFunctions.Companion.foo",
-        "io.reflekt.test.nested.foo"
+        {
+          "signature": {
+            "fqName": "kotlin.Function0",
+            "parameters": [
+              {
+                "fqName": "kotlin.Unit",
+                "parameters": []
+              }
+            ]
+          },
+          "annotations": [
+            "io.reflekt.test.FirstAnnotationTest"
+          ]
+        },
+        [
+          "io.reflekt.test.nested.foo"
+        ]
       ]
     ]
-  ]
+  }
 }

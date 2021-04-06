@@ -12,8 +12,7 @@ class ObjectUsesProcessor(override val binding: BindingContext, private val refl
 
     override fun process(filePath: String, element: KtElement): MutableMap<String, ClassOrObjectUses> {
         val invokes = reflektInvokes.objects.invokes
-        val uses = fileToUses.getOrPut(filePath) { initClassOrObjectUses(invokes) }
-        processClassOrObjectUses(element, invokes, uses)
+        processClassOrObjectUses(filePath, element, invokes, fileToUses)
         return fileToUses
     }
 

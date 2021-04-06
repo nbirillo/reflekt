@@ -1,17 +1,19 @@
 {
-  "objects": [
-    [
-      {
-        "subTypes": [
-          "io.reflekt.test.A1"
-        ],
-        "annotations": []
-      },
+  "objects": {
+    "io.reflekt.test": [
       [
-        "io.reflekt.test.A1"
+        {
+          "subTypes": [
+            "io.reflekt.test.A1"
+          ],
+          "annotations": []
+        },
+        [
+          "io.reflekt.test.A1"
+        ]
       ]
     ]
-  ],
+  },
   "classes": {},
   "functions": {}
 }
