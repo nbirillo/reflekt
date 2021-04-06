@@ -2,7 +2,7 @@
   "objects": {},
   "classes": {},
   "functions": {
-    "io.reflekt.test": [
+    "io.reflekt.test.Main.kt": [
       {
         "signature": {
           "fqName": "kotlin.Function0",

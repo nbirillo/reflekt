@@ -16,7 +16,9 @@ open class BaseAnalyzer(open val ktFiles: Set<KtFile>, open val binding: Binding
 
     protected fun Set<KtFile>.processFiles(processors: Set<Processor<*>>) {
         this.forEach { file ->
-            file.visit(file.packageFqName.asString(), processors)
+            // filePath looks like: packages.names.FILE_NAME.kt
+            val filePath = "${file.packageFqName}.${file.name}"
+            file.visit(filePath, processors)
         }
     }
 }

@@ -1,6 +1,6 @@
 {
   "objects": {
-    "io.reflekt.test": [
+    "io.reflekt.test.A.kt": [
       [
         {
           "subTypes": [
@@ -27,7 +27,34 @@
           "io.reflekt.test.A1",
           "io.reflekt.test.A2",
           "io.reflekt.test.A3",
-          "io.reflekt.test.A4",
+          "io.reflekt.test.A4"
+        ]
+      ]
+    ],
+    "io.reflekt.test.Functions.kt": [
+      [
+        {
+          "subTypes": [
+            "io.reflekt.test.BInterfaceTest",
+            "io.reflekt.test.AInterfaceTest"
+          ],
+          "annotations": []
+        },
+        [
+          "io.reflekt.test.A1",
+          "io.reflekt.test.A2",
+          "io.reflekt.test.A3",
+          "io.reflekt.test.A4"
+        ]
+      ],
+      [
+        {
+          "subTypes": [
+            "kotlin.Any"
+          ],
+          "annotations": []
+        },
+        [
           "io.reflekt.test.TestFunctions.Companion"
         ]
       ]

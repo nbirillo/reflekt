@@ -2,7 +2,7 @@
   "objects": {},
   "classes": {},
   "functions": {
-    "io.reflekt.test": [
+    "io.reflekt.test.Functions.kt": [
       [
         {
           "signature": {
@@ -26,7 +26,7 @@
         ]
       ]
     ],
-    "io.reflekt.test.nested": [
+    "io.reflekt.test.nested.Functions.kt": [
       [
         {
           "signature": {

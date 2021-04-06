@@ -1,6 +1,6 @@
 {
   "objects": {
-    "io.reflekt.test": [
+    "io.reflekt.test.Main.kt": [
       {
         "subTypes": [
           "io.reflekt.test.BInterfaceTest",

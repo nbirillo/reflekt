@@ -1,7 +1,7 @@
 {
   "objects": {},
   "classes": {
-    "io.reflekt.test": [
+    "io.reflekt.test.Main.kt": [
       {
         "subTypes": [
           "io.reflekt.test.B2"
