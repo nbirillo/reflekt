@@ -3,6 +3,7 @@ package io.reflekt.plugin.generation.bytecode
 import io.reflekt.Reflekt
 import io.reflekt.plugin.analysis.common.*
 import io.reflekt.plugin.analysis.models.ReflektUses
+import io.reflekt.plugin.analysis.models.ReflektUses.Companion.uses
 import io.reflekt.plugin.analysis.models.SignatureToAnnotations
 import io.reflekt.plugin.analysis.models.SubTypesToAnnotations
 import io.reflekt.plugin.analysis.psi.getFqName
@@ -80,12 +81,12 @@ internal data class ReflektInvokeParts(
 ) : BaseReflektInvokeParts(name, nestedName, terminalFunctionName) {
     // Extract result classes or objects and convert them into ASM types.
     fun getUses(
-        uses: ReflektUses,
+        fileToUses: ReflektUses,
         invokeArguments: SubTypesToAnnotations,
         c: ExpressionCodegenExtension.Context
     ): List<Type> {
         val binding = c.codegen.bindingContext
-        val items = if (name == ReflektName.OBJECTS) uses.objects else uses.classes
+        val items = if (name == ReflektName.OBJECTS) fileToUses.objects.uses else fileToUses.classes.uses
         return items[invokeArguments]?.map {
             binding.get(ASM_TYPE, it.findClassDescriptor(binding)) ?: throw ReflektGenerationException("Failed to resolve class [$it]")
         } ?: throw ReflektGenerationException("No data for call [$this]")
@@ -93,12 +94,12 @@ internal data class ReflektInvokeParts(
 
     // Extract result functions and convert them into ASM types.
     fun getUses(
-        uses: ReflektUses,
+        fileToUses: ReflektUses,
         invokeArguments: SignatureToAnnotations,
         c: ExpressionCodegenExtension.Context,
         functionInstanceGenerator: FunctionInstanceGenerator
     ): List<Type> {
-        val items = uses.functions
+        val items = fileToUses.functions.uses
         return items[invokeArguments]?.map {
             functionInstanceGenerator.generate(it, c)
         } ?: throw ReflektGenerationException("No data for call [$this]")

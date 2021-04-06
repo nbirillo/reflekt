@@ -1,12 +1,14 @@
 {
-  "objects": [],
-  "classes": [
-    {
-      "subTypes": [
-        "io.reflekt.test.BInterfaceTest"
-      ],
-      "annotations": []
-    }
-  ],
-  "functions": []
+  "objects": {},
+  "classes": {
+    "io.reflekt.test": [
+      {
+        "subTypes": [
+          "io.reflekt.test.BInterfaceTest"
+        ],
+        "annotations": []
+      }
+    ]
+  },
+  "functions": {}
 }

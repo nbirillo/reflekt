@@ -10,13 +10,13 @@ import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.utils.addIfNotNull
 
 class FunctionInvokesProcessor (override val binding: BindingContext): BaseInvokesProcessor<FunctionInvokes>(binding){
-    override val invokes: FunctionInvokes = HashSet()
+    override val fileToInvokes: MutableMap<String, FunctionInvokes> = HashMap()
 
-    override fun process(element: KtElement): FunctionInvokes {
+    override fun process(filePath: String, element: KtElement): MutableMap<String, FunctionInvokes> {
         (element as? KtReferenceExpression)?.let {
-            invokes.addIfNotNull(findReflektFunctionInvokeArgumentsByExpressionPart(element, binding))
+            fileToInvokes.getOrPut(filePath) { HashSet() }.addIfNotNull(findReflektFunctionInvokeArgumentsByExpressionPart(element, binding))
         }
-        return invokes
+        return fileToInvokes
     }
 
     override fun isValidExpression(expression: KtReferenceExpression) = expression.getFqName(binding) == ReflektName.FUNCTIONS.fqName

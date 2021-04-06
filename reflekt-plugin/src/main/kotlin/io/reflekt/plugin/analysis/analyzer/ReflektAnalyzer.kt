@@ -11,17 +11,13 @@ import org.jetbrains.kotlin.resolve.BindingContext
 class ReflektAnalyzer(override val ktFiles: Set<KtFile>, override val binding: BindingContext) : BaseAnalyzer(ktFiles, binding) {
     fun uses(invokes: ReflektInvokes): ReflektUses {
         val processors = setOf(ClassUsesProcessor(binding, invokes), ObjectUsesProcessor(binding, invokes), FunctionUsesProcessor(binding, invokes))
-        ktFiles.forEach { file ->
-            file.visit(processors)
-        }
+        ktFiles.processFiles(processors)
         return ReflektUses.createByProcessors(processors)
     }
 
     fun invokes(): ReflektInvokes {
         val processors = setOf(ClassInvokesProcessor(binding), ObjectInvokesProcessor(binding), FunctionInvokesProcessor(binding))
-        ktFiles.forEach { file ->
-            file.visit(processors)
-        }
+        ktFiles.processFiles(processors)
         return ReflektInvokes.createByProcessors(processors)
     }
 }

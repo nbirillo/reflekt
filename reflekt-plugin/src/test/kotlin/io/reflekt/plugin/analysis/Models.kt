@@ -1,6 +1,7 @@
 package io.reflekt.plugin.analysis
 
 import io.reflekt.plugin.analysis.models.*
+import io.reflekt.plugin.analysis.models.ReflektUses.Companion.uses
 import org.jetbrains.kotlin.psi.KtNamedDeclaration
 
 typealias TypeUsesTest<K> = Map<K, Set<String>>
@@ -25,8 +26,9 @@ private fun <K, V: KtNamedDeclaration> fromTypeUses(uses: TypeUses<K, V>) : Type
     }
 }
 
+// TODO: add files
 fun ReflektUses.toTestUses() = ReflektUsesTest(
-    objects = fromTypeUses(objects),
-    classes = fromTypeUses(classes),
-    functions = fromTypeUses(functions)
+    objects = fromTypeUses(objects.uses),
+    classes = fromTypeUses(classes.uses),
+    functions = fromTypeUses(functions.uses)
 )

@@ -8,8 +8,12 @@ import org.jetbrains.kotlin.psi.KtReferenceExpression
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.utils.addIfNotNull
 
+/*
+* Base processor to get invokes by fqNames (e.g. all Reflekt DSL invokes) in a project.
+* */
 abstract class BaseInvokesProcessor<Output : Any>(override val binding: BindingContext): Processor<Output>(binding) {
-    abstract val invokes: Output
+    // Map represents invokes for each file. String in the map is a path to the file.
+    abstract val fileToInvokes: MutableMap<String, Output>
 
     protected fun processClassOrObjectInvokes(element: KtElement): ClassOrObjectInvokes {
         val invokes: ClassOrObjectInvokes = HashSet()

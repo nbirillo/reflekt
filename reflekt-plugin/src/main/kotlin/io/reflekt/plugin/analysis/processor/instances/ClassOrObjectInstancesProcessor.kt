@@ -6,14 +6,18 @@ import org.jetbrains.kotlin.psi.KtClassOrObject
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.resolve.BindingContext
 
-open class ClassOrObjectInstancesProcessor(override val binding: BindingContext) : BaseInstancesProcessor<List<KtClassOrObject>>(binding) {
-    override val instances: MutableList<KtClassOrObject> = ArrayList()
+/*
+* Processor to get instances for all classes or objects in a project.
+* Note: get only public objects and public not abstract classes.
+* */
+open class ClassOrObjectInstancesProcessor(override val binding: BindingContext) : BaseInstancesProcessor<MutableList<KtClassOrObject>>(binding) {
+    override val fileToInstances: MutableMap<String, MutableList<KtClassOrObject>> = HashMap()
 
-    override fun process(element: KtElement): List<KtClassOrObject> {
+    override fun process(filePath: String, element: KtElement): MutableMap<String, MutableList<KtClassOrObject>> {
         (element as? KtClassOrObject)?.let {
-            instances.add(it)
+            fileToInstances.getOrPut(filePath) { ArrayList() }.add(it)
         }
-        return instances
+        return fileToInstances
     }
 
     override fun shouldRunOn(element: KtElement) = element.isPublicNotAbstractClass || element.isPublicObject

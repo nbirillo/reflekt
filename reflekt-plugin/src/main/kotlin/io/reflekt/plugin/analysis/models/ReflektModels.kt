@@ -1,5 +1,6 @@
 package io.reflekt.plugin.analysis.models
 
+import io.reflekt.plugin.analysis.models.ReflektUses.Companion.uses
 import io.reflekt.plugin.analysis.processor.invokes.*
 import io.reflekt.plugin.analysis.processor.uses.*
 import org.jetbrains.kotlin.psi.KtClassOrObject
@@ -44,16 +45,19 @@ typealias ClassOrObjectInvokes = MutableSet<SubTypesToAnnotations>
 typealias FunctionInvokes = MutableSet<SignatureToAnnotations>
 
 data class ReflektInvokes(
-    val objects: ClassOrObjectInvokes = HashSet(),
-    val classes: ClassOrObjectInvokes = HashSet(),
-    val functions: FunctionInvokes = HashSet()
+    val objects: Map<String, ClassOrObjectInvokes> = HashMap(),
+    val classes: Map<String, ClassOrObjectInvokes> = HashMap(),
+    val functions: Map<String, FunctionInvokes> = HashMap()
 ) {
     companion object{
         fun createByProcessors(processors: Set<BaseInvokesProcessor<*>>) = ReflektInvokes(
-            objects = processors.mapNotNull { it as? ObjectInvokesProcessor }.first().invokes,
-            classes = processors.mapNotNull { it as? ClassInvokesProcessor }.first().invokes,
-            functions = processors.mapNotNull { it as? FunctionInvokesProcessor }.first().invokes
+            objects = processors.mapNotNull { it as? ObjectInvokesProcessor }.first().fileToInvokes,
+            classes = processors.mapNotNull { it as? ClassInvokesProcessor }.first().fileToInvokes,
+            functions = processors.mapNotNull { it as? FunctionInvokesProcessor }.first().fileToInvokes
         )
+
+        val <T> Map<String, MutableSet<T>>.invokes: MutableSet<T>
+            get() = this.values.flatten().toMutableSet()
     }
 }
 
@@ -69,15 +73,27 @@ fun ClassOrObjectUses.toSubTypesToFqNamesMap(): Map<Set<String>, MutableList<KtC
  * Store a set of qualified names that match the conditions for each item from [ReflektInvokes]
  */
 data class ReflektUses(
-    val objects: ClassOrObjectUses = HashMap(),
-    val classes: ClassOrObjectUses = HashMap(),
-    val functions: FunctionUses = HashMap()
+    val objects: Map<String, ClassOrObjectUses> = HashMap(),
+    val classes: Map<String, ClassOrObjectUses> = HashMap(),
+    val functions: Map<String, FunctionUses> = HashMap()
 ) {
     companion object{
         fun createByProcessors(processors: Set<BaseUsesProcessor<*>>) = ReflektUses(
-            objects = processors.mapNotNull { it as? ObjectUsesProcessor }.first().uses,
-            classes = processors.mapNotNull { it as? ClassUsesProcessor }.first().uses,
-            functions = processors.mapNotNull { it as? FunctionUsesProcessor }.first().uses
+            objects = processors.mapNotNull { it as? ObjectUsesProcessor }.first().fileToUses,
+            classes = processors.mapNotNull { it as? ClassUsesProcessor }.first().fileToUses,
+            functions = processors.mapNotNull { it as? FunctionUsesProcessor }.first().fileToUses
         )
+
+        // TypeUses<K, V> = Map<K, MutableList<V>>
+        val <K, V> Map<String, TypeUses<K, V>>.uses: TypeUses<K, V>
+            get() = run {
+                val uses: MutableMap<K, MutableList<V>> = HashMap()
+                this.values.forEach { u ->
+                    u.forEach { (k, v) ->
+                        uses.getOrPut(k) { ArrayList() }.addAll(v)
+                    }
+                }
+                uses
+            }
     }
 }

@@ -9,11 +9,14 @@ import org.jetbrains.kotlin.resolve.BindingContext
 import kotlin.collections.HashSet
 
 class ObjectInvokesProcessor (override val binding: BindingContext): BaseInvokesProcessor<ClassOrObjectInvokes>(binding){
-    override val invokes: ClassOrObjectInvokes = HashSet()
+    override val fileToInvokes: MutableMap<String, ClassOrObjectInvokes> = HashMap()
 
-    override fun process(element: KtElement): ClassOrObjectInvokes {
-        invokes.addAll(processClassOrObjectInvokes(element))
-        return invokes
+    override fun process(filePath: String, element: KtElement): MutableMap<String, ClassOrObjectInvokes> {
+        val invokes = processClassOrObjectInvokes(element)
+        if (invokes.isNotEmpty()) {
+            fileToInvokes.getOrPut(filePath) { HashSet() }.addAll(invokes)
+        }
+        return fileToInvokes
     }
 
     override fun isValidExpression(expression: KtReferenceExpression) = expression.getFqName(binding) == ReflektName.OBJECTS.fqName

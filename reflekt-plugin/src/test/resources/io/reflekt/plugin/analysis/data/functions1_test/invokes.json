@@ -1,18 +1,20 @@
 {
-  "objects": [],
-  "classes": [],
-  "functions": [
-    {
-      "signature": {
-        "fqName": "kotlin.Function0",
-        "parameters": [
-          {
-            "fqName": "kotlin.Unit",
-            "parameters": []
-          }
-        ]
-      },
-      "annotations": []
-    }
-  ]
+  "objects": {},
+  "classes": {},
+  "functions": {
+    "io.reflekt.test": [
+      {
+        "signature": {
+          "fqName": "kotlin.Function0",
+          "parameters": [
+            {
+              "fqName": "kotlin.Unit",
+              "parameters": []
+            }
+          ]
+        },
+        "annotations": []
+      }
+    ]
+  }
 }

@@ -8,15 +8,15 @@ import org.jetbrains.kotlin.psi.KtNamedFunction
  * Store a set of qualified names that exist in the project and additional libraries
  */
 data class ReflektInstances(
-    val objects: List<KtClassOrObject> = ArrayList(),
-    val classes: List<KtClassOrObject> = ArrayList(),
-    val functions: List<KtNamedFunction> = ArrayList()
+    val objects: Map<String, List<KtClassOrObject>> = HashMap(),
+    val classes: Map<String, List<KtClassOrObject>> = HashMap(),
+    val functions: Map<String, List<KtNamedFunction>> = HashMap()
 ) {
     companion object{
         fun createByProcessors(processors: Set<BaseInstancesProcessor<*>>) = ReflektInstances(
-            objects = processors.mapNotNull { it as? ObjectInstancesProcessor }.first().instances,
-            classes = processors.mapNotNull { it as? ClassInstancesProcessor }.first().instances,
-            functions = processors.mapNotNull { it as? FunctionInstancesProcessor }.first().instances
+            objects = processors.mapNotNull { it as? ObjectInstancesProcessor }.first().fileToInstances,
+            classes = processors.mapNotNull { it as? ClassInstancesProcessor }.first().fileToInstances,
+            functions = processors.mapNotNull { it as? FunctionInstancesProcessor }.first().fileToInstances
         )
     }
 }

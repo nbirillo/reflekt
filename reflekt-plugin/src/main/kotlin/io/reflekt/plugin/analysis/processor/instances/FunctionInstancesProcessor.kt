@@ -4,14 +4,18 @@ import io.reflekt.plugin.analysis.processor.*
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.resolve.BindingContext
 
-class FunctionInstancesProcessor(override val binding: BindingContext) : BaseInstancesProcessor<List<KtNamedFunction>>(binding) {
-    override val instances: MutableList<KtNamedFunction> = ArrayList()
+/*
+* Processor to get instances for all functions in a project.
+* Note: get only public functions.
+* */
+class FunctionInstancesProcessor(override val binding: BindingContext) : BaseInstancesProcessor<MutableList<KtNamedFunction>>(binding) {
+    override val fileToInstances: MutableMap<String, MutableList<KtNamedFunction>> = HashMap()
 
-    override fun process(element: KtElement): List<KtNamedFunction> {
+    override fun process(filePath: String, element: KtElement): MutableMap<String, MutableList<KtNamedFunction>> {
         (element as? KtNamedFunction)?.let {
-            instances.add(it)
+            fileToInstances.getOrPut(filePath) { ArrayList() }.add(it)
         }
-        return instances
+        return fileToInstances
     }
 
     override fun shouldRunOn(element: KtElement) = element.isPublicFunction

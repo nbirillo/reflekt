@@ -10,10 +10,8 @@ import org.jetbrains.kotlin.psi.KtNameReferenceExpression
 class SmartReflektTestAnalyzer(baseAnalyzer: BaseAnalyzer) : BaseAnalyzer(baseAnalyzer.ktFiles, baseAnalyzer.binding) {
     private fun expressions(): MutableList<KtNameReferenceExpression> {
         val processor = SmartReflektExpressionProcessor(binding)
-        ktFiles.forEach { file ->
-            file.visit(setOf(processor))
-        }
-        return processor.expressions
+        ktFiles.processFiles(setOf(processor))
+        return processor.expressions.values.flatten().toMutableList()
     }
 
     fun analyze(): Set<SubTypesToFilters> {
