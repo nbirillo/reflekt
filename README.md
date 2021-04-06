@@ -14,7 +14,8 @@ The main reason for its creation was the necessity of GraalVM support in modern 
 especially on Serverless workloads. With the help of the Reflekt project, Kotless will be able to provide access to GraalVM to 
 users of historically reflection-based frameworks such as Spring or their own Kotless DSL.
 
-Restrictions. Reflekt analyses only `.kt` files. Use with Java SE 11.
+Restrictions. Reflekt analyses only `.kt` files in the project and in the libraries, 
+uses Kotlin `1.4.20`.
 ___
 
 ## Table of contents
@@ -73,16 +74,17 @@ To avoid some bugs, please add the following compilation settings for Java and K
 
 ```kotlin
 val compileKotlin: KotlinCompile by tasks
-    compileKotlin.kotlinOptions {
-        jvmTarget = "11"
-        languageVersion = "1.4"
-        apiVersion = "1.4"
+compileKotlin.kotlinOptions {
+    jvmTarget = "11"
+    languageVersion = "1.4"
+    apiVersion = "1.4"
 }
+
 val compileTestKotlin: KotlinCompile by tasks
-    compileTestKotlin.kotlinOptions {
-        jvmTarget = "11"
-        languageVersion = "1.4"
-        apiVersion = "1.4"
+compileTestKotlin.kotlinOptions {
+    jvmTarget = "11"
+    languageVersion = "1.4"
+    apiVersion = "1.4"
 }
 ```
 
@@ -133,7 +135,7 @@ write this version in the plugins and dependencies sections.
     - [x] external libraries
 - [ ] Incremental compilation process
 - [ ] Compile-time reflection by custom users' filters for `one-module` projects (for objects, classes, and functions)
-- [ ] Code generation.
+- [ ] Code generation
 
 ## Examples
 
